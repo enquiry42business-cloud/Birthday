@@ -88,11 +88,14 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      margin: 15px 0;
+      margin: 15px 0 5px 0;
       transition: background .2s;
     }
     .button:hover {
       background: #d35400;
+    }
+    #confettiCanvas {
+      position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:999;
     }
   </style>
 </head>
@@ -110,4 +113,57 @@
     May your hairline and your passwords always stay strong.<br>
     Let’s celebrate your <span id="age"></span>th lap around the sun!
     <div class="joke">
-      “You’re not old
+      “You’re not old… you’re just well-seasoned!”<br>
+      “You age like a fine browser cache… eventually, people forget you.”
+    </div>
+    <button class="button" onclick="showSurprise()">Click for Surprise</button>
+    <div id="surprise" style="margin-top:15px; display:none;">
+      🎉 Saurabh, this is not just a web page – it’s proof you have legendary friends! 🎉<br>
+      Here’s to more pizza, memes, and epic fails together!
+    </div>
+    <button onclick="makeConfetti()" class="button">Throw Confetti!</button>
+    <canvas id="confettiCanvas"></canvas>
+  </div>
+  <div class="footer">Made with laughter and zero sleep – Happy Birthday!</div>
+  <script>
+    // Optional: Replace this with Saurabh's real age
+    document.getElementById('age').innerText = 25;
+
+    function showSurprise() {
+      document.getElementById('surprise').style.display = 'block';
+    }
+
+    function makeConfetti() {
+      const canvas = document.getElementById('confettiCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      let confetti = [];
+      for(let i=0; i<80; i++){
+        confetti.push({
+          x: Math.random()*canvas.width,
+          y: Math.random()*canvas.height/4,
+          r: Math.random()*8+4,
+          c: `hsl(${Math.random()*360},100%,50%)`,
+          vx: Math.random()*2-1,
+          vy: Math.random()*3+2
+        });
+      }
+      let frame = 0;
+      (function draw() {
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        confetti.forEach(d=>{
+          ctx.beginPath();
+          ctx.arc(d.x, d.y, d.r, 0, 2*Math.PI);
+          ctx.fillStyle = d.c;
+          ctx.fill();
+          d.x += d.vx;
+          d.y += d.vy;
+        });
+        if(frame++<80) requestAnimationFrame(draw);
+        else ctx.clearRect(0,0,canvas.width,canvas.height);
+      })();
+    }
+  </script>
+</body>
+</html>
